@@ -48,9 +48,10 @@ if($get_rss == 1)
 			#head{width:900px; margin:0 auto; font-size:40px;margin-top:30px; font-weight:bold;}
 			.item {width:100%;text-align:left;clear:both;}
 			.feed {width:29%; float:left; }
-			.article {width:59%; float:left; }
-			.like{display:block;width:40px;float:left;background:#000;height:18px;line-height:18px;cursor:pointer;margin-top:3px;font-size:12px;text-align:center;color:#FFF;}
-			.subscribe {width:9%; float:left;vertical-align:bottom; }
+			.article {width:56%; float:left; }
+			.like{display:block;width:50px;float:left;text-decoration:none;background:#000;height:18px;line-height:18px;cursor:pointer;margin-top:3px;margin-left:3px;font-size:12px;text-align:center;color:#FFF;}
+			.share{display:block;width:40px;float:left;height:18px;line-height:18px;cursor:pointer;margin-top:3px;font-size:12px;text-align:center}
+			.subscribe {width:12%; float:left;vertical-align:bottom; }
 			a {font-size:13px; color: #1D5261;}
 			a:hover {color: #5697A3;}
 			.butn {display:block; float:left; margin-left:5px;width:120px;height:28px;background:#DDD;text-decoration:none;text-align:center;color:#333;font-size:14px;cursor:pointer;}
@@ -59,8 +60,18 @@ if($get_rss == 1)
 		</style>
 	<head>
 	<body>
+	<script type="text/javascript">
+  window.___gcfg = {lang: 'zh-CN'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
 		<div id="head">
 			<p style="font-size:14px;color:#888;">选择自己喜欢的feed点击订阅，点击刷新看到更多的候选feed，选定后点击生成RSS可以生成一个RSS链接</p>
+			<p style="font-size:14px;color:#888;">分享: <a href="javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:'',r='http://www.douban.com/recommend/?url='+e(d.location.href)+'&title='+e(d.title)+'&sel='+e(s)+'&v=1',x=function(){if(!window.open(r,'douban','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r+'&r=1'};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()"><img src="http://img2.douban.com/pics/fw2douban1.png" alt="推荐到豆瓣" /></a><g:plusone size="medium" annotation="inline"></g:plusone></p>
 			<a href="http://www.reculike.com/site/reader/" class="butn">刷新</a>
 			<a onclick="deleteHistory();" href="http://www.reculike.com/site/reader/" class="butn">
 				重置
@@ -76,6 +87,7 @@ if($get_rss == 1)
 					$rss_encode_link = urlencode($rss_link);
 					echo "<a target=\"_blank\" href=\"$rss_link\" class=\"butn\">我的RSS</a>";
 					echo "<a class=\"butn\" style=\"background:#FFF;\" target=\"_blank\" href=\"http://fusion.google.com/add?source=atgs&feedurl=$rss_encode_link\"><img src=\"http://buttons.googlesyndication.com/fusion/add.gif\" border=\"0\" alt=\"Add to Google\"></a>";
+					echo "<a target=\"_blank\" href=\"http://xianguo.com/subscribe?url=$rss_encode_link\"><img src=\"http://xgres.com/static/images/sub/sub_XianGuo_08.gif\" border=\"0\" /></a>";
 				}
 			?>
 		</div>
@@ -95,66 +107,44 @@ if($get_rss == 1)
 			foreach($history as $src_id)
 			{
 				if(strlen($src_id) == 0) continue;
-				$result = mysql_query("select dst_id,weight from feedsim where src_id=$src_id");
+				$max_weight = 0;
+				$j = 0;
+				$result = mysql_query("select dst_id,weight from feedsim where src_id=$src_id order by weight desc");
 				while($row=mysql_fetch_array($result))
 				{
 					$dst_id = $row[0];
 					$weight = $row[1];
+					if($j == 0) $max_weight = $weight;
+					++$j;
 					if(in_array($dst_id, $history)) continue;
-					if(!array_key_exists($dst_id, $rank)) $rank[$dst_id] = $weight;
-					else $rank[$dst_id] += $weight;
+					if(in_array($dst_id, $load_history)) continue;
+					if(!array_key_exists($dst_id, $rank)) $rank[$dst_id] = $weight / $max_weight;
+					else $rank[$dst_id] += $weight / $max_weight;
 				}
 			}
-			foreach($load_history as $src_id)
-			{
-				if(strlen($src_id) == 0) continue;
-				if(in_array($src_id, $history)) continue;
-				$result = mysql_query("select dst_id,weight from feedsim where src_id=$src_id");
-				while($row=mysql_fetch_array($result))
-				{
-					$dst_id = $row[0];
-					$weight = $row[1];
-					if(in_array($dst_id, $history)) continue;
-					if(!array_key_exists($dst_id, $rank)) $rank[$dst_id] = (-0.1) * $weight;
-					else $rank[$dst_id] += (-0.1) * $weight;
-				}
-			}
-			
-			$minvalue = 10000;
-			foreach($rank as $id => $w)
-			{
-				if($minvalue > $w) $minvalue = $w;
-			}
-			$result = mysql_query("select id from feeds order by popularity desc limit 200");
+			$minvalue = 0.01;
+			$result = mysql_query("select id from feeds a order by popularity desc");
 			while($row=mysql_fetch_array($result))
 			{
 				$id = $row[0];
 				if(array_key_exists($id, $rank)) continue;
 				if(in_array($id, $history)) continue;
-				if(in_array($id, $load_history)) $rank[$id] = $minvalue * 0.05;
-				else $rank[$id] = $minvalue * 0.95;
+				if(in_array($id, $load_history)) continue;
+				$rank[$id] = $minvalue * 0.95;
 				$minvalue *= 0.95;
+				if(count($rank) > 300) break;
 			}
-			
-			arsort($rank);
 			$ids = '';
 			$n = 0;
 			foreach($rank as $id => $w)
 			{
+				if($w < 0) continue;
 				$ids .= $id . ',';
+				
 				if(++$n > 100) break;
 			}
 			$ids .= '0';
-			$result = mysql_query("select id, modify_at from feeds where id in ($ids) and modify_at>0 order by modify_at desc");
-			while($row=mysql_fetch_array($result))
-			{
-				$id = $row[0];
-				$pubdate = $row[1];
-				if(!array_key_exists($id, $rank)) continue;
-				$rank[$id] /= (1 + 0.1 * (time() - $pubdate));
-			}
 			$n = 0;
-			arsort($rank);
 			foreach($history as $id)
 			{
 				if(strlen($id) == 0) continue;
@@ -195,6 +185,8 @@ if($get_rss == 1)
 					if(in_array($article, $articles)) continue;
 					array_push($articles, $article);
 					$article_link = $row[3];
+					$encode_article_link = urlencode($article_link);
+					$title = urlencode($name . ": " . $article . " / 分享自 http://www.reculike.com/site/reader/");
 					if(strlen($name) > 40 || strlen($article) < 10 || strlen($article_link) > 180 || strlen($article) > 80) continue;
 					if(!IsChinese($article)) continue;
 					if(++$n > 24) break;
