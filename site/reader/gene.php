@@ -21,6 +21,7 @@ srand(time());
 			.subscribe {width:12%; float:left;vertical-align:bottom; }
 			a {font-size:13px; color: #1D5261;}
 			a:hover {color: #5697A3;}
+			.gene {width:360px;height=28px;}
 			.butn {display:block; float:left; margin-left:5px;width:120px;height:28px;background:#DDD;text-decoration:none;text-align:center;color:#333;font-size:14px;cursor:pointer;}
 			/*.feedtitle {height:18px;line-height:18px; display:block;float:left;width:95%;}*/
 			img {border:none;}
@@ -48,8 +49,8 @@ srand(time());
 				{
 					$name = $row[1];
 					$link = $row[2];
-					echo "<a href=\"$link\" target=_blank>$name</a>";
-					echo "<input type=\"text\" name=\"gene\" />";
+					echo "<a href=\"$link\" target=_blank>$name</a><br>";
+					echo "<input type=\"text\" name=\"gene\" class=\"gene\" />";
 				}
 				?>
 				<input type="submit" value="提交" />
