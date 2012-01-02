@@ -51,6 +51,7 @@ srand(time());
 					$link = $row[2];
 					echo "<a href=\"$link\" target=_blank>$name</a><br>";
 					echo "<input type=\"text\" name=\"gene\" class=\"gene\" />";
+					break;
 				}
 				?>
 				<input type="submit" value="提交" />
