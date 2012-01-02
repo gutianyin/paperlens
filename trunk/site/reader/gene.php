@@ -44,6 +44,7 @@ srand(time());
 			<form action="tag_gene.php" method="post">
 				<?php
 				$result = mysql_query("select id, name,link from feeds order by popularity desc limit 100");
+				while($row=mysql_fetch_array($result))
 				{
 					$name = $row[1];
 					$link = $row[2];
