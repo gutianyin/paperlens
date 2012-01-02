@@ -2,6 +2,19 @@
 require_once('db.php');
 srand(time());
 
+if(isset($_POST['feed'])
+{
+	$feed = $_POST['feed'];
+	$genes = $_POST['gene'];
+	
+	$gene_array = explode(',', $genes);
+	
+	for($gene_array as $gene)
+	{
+		mysql_query("insert into gene (feed_id, gene, weight) values($feed, $gene, 1);");
+	}
+}
+
 ?>
 
 <html>
@@ -42,7 +55,7 @@ srand(time());
 				<span class="article" style="font-size:16px;line-height:36px;font-weight:bold;">最新文章</span>
 				<span class="subscribe" style="font-size:16px;line-height:36px;font-weight:bold;">订阅</span>
 			</div>
-			<form action="tag_gene.php" method="post">
+			<form action="gene.php" method="post">
 				<?php
 				$feed_id = -1;
 				$result = mysql_query("select id, name,link from feeds order by popularity desc limit 100");
@@ -52,6 +65,7 @@ srand(time());
 					$name = $row[1];
 					$link = $row[2];
 					echo "<a href=\"$link\" target=_blank>$name</a><br>";
+					echo "<input type=\"hidden\" name=\"feed\" value=\"$feed_id\" />";
 					echo "<input type=\"text\" name=\"gene\" class=\"gene\" /><br>";
 					break;
 				}
