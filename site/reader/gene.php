@@ -65,7 +65,7 @@ if(isset($_POST['feed']))
 					$used_feeds[$row[0]] = 1;
 				}
 				$feed_id = -1;
-				$result = mysql_query("select id, name,link from feeds order by popularity desc limit 100");
+				$result = mysql_query("select id, name,link from feeds order by popularity desc limit 1000");
 				while($row=mysql_fetch_array($result))
 				{
 					$feed_id = $row[0];
