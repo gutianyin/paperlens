@@ -58,11 +58,18 @@ if(isset($_POST['feed']))
 			</div>
 			<form action="gene.php" method="post">
 				<?php
+				$used_feeds = array();
+				$result = mysql_query("select feed_id from gene group by feed_id");
+				while($row = mysql_fetch_array($result))
+				{
+					$used_feeds[$row[0]] = 1;
+				}
 				$feed_id = -1;
 				$result = mysql_query("select id, name,link from feeds order by popularity desc limit 100");
 				while($row=mysql_fetch_array($result))
 				{
 					$feed_id = $row[0];
+					if(array_key_exists($feed_id, $used_feeds)) continue;
 					$name = $row[1];
 					$link = $row[2];
 					echo "<a href=\"$link\" target=_blank>$name</a><br>";
