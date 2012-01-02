@@ -9,7 +9,7 @@ if(isset($_POST['feed']))
 	
 	$gene_array = explode(',', $genes);
 	
-	for($gene_array as $gene)
+	foreach($gene_array as $gene)
 	{
 		mysql_query("insert into gene (feed_id, gene, weight) values($feed, $gene, 1);");
 	}
