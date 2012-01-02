@@ -44,14 +44,24 @@ srand(time());
 			</div>
 			<form action="tag_gene.php" method="post">
 				<?php
+				$feed_id = -1;
 				$result = mysql_query("select id, name,link from feeds order by popularity desc limit 100");
 				while($row=mysql_fetch_array($result))
 				{
+					$feed_id = $row[0];
 					$name = $row[1];
 					$link = $row[2];
 					echo "<a href=\"$link\" target=_blank>$name</a><br>";
 					echo "<input type=\"text\" name=\"gene\" class=\"gene\" />";
 					break;
+				}
+				
+				$result = mysql_query("select c.title, c.link  from feed_articles b, articles c where b.feed_id=$feed_id and b.article_id=c.id order by c.pub_at desc limit 10");
+				while($row=mysql_fetch_array($result))
+				{
+					$title = $row[0];
+					$link = $row[1];
+					echo "<a href=\"$link\" target=_blank>$title</a><br>";
 				}
 				?>
 				<input type="submit" value="提交" />
