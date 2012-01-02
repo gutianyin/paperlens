@@ -71,6 +71,7 @@ if(isset($_POST['feed']))
 					$feed_id = $row[0];
 					if(array_key_exists($feed_id, $used_feeds)) continue;
 					$name = $row[1];
+					if(strlen($name) < 1) continue;
 					$link = $row[2];
 					echo "<a href=\"$link\" target=_blank>$name</a><br>";
 					echo "<input type=\"hidden\" name=\"feed\" value=\"$feed_id\" />";
