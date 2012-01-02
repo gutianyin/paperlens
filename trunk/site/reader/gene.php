@@ -12,7 +12,7 @@ if(isset($_POST['feed']))
 	foreach($gene_array as $gene)
 	{
 		mysql_query("insert into gene (feed_id, gene, weight) values($feed, $gene, 1);");
-		echo "insert into gene (feed_id, gene, weight) values($feed, $gene, 1);"
+		echo "insert into gene (feed_id, gene, weight) values($feed, $gene, 1);";
 	}
 }
 
