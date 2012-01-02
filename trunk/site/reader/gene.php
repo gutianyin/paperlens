@@ -2,7 +2,7 @@
 require_once('db.php');
 srand(time());
 
-if(isset($_POST['feed'])
+if(isset($_POST['feed']))
 {
 	$feed = $_POST['feed'];
 	$genes = $_POST['gene'];
