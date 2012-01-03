@@ -66,8 +66,10 @@ if(isset($_POST['feed']))
 				}
 				$feed_id = -1;
 				$result = mysql_query("select id, name,link from feeds order by popularity desc limit 1000");
+				$n = 0;
 				while($row=mysql_fetch_array($result))
 				{
+					++$n;
 					$feed_id = $row[0];
 					if(array_key_exists($feed_id, $used_feeds)) continue;
 					$name = $row[1];
@@ -78,7 +80,7 @@ if(isset($_POST['feed']))
 					echo "<input type=\"text\" name=\"gene\" class=\"gene\" /><br>";
 					break;
 				}
-				echo $feed_id;
+				echo $n;
 				$result = mysql_query("select c.title, c.link  from feed_articles b, articles c where b.feed_id=$feed_id and b.article_id=c.id order by c.pub_at desc limit 10");
 				while($row=mysql_fetch_array($result))
 				{
