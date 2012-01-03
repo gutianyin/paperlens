@@ -2,6 +2,15 @@
 require_once('db.php');
 srand(time());
 
+function IsChinese($buf)
+{
+	for($i = 0; $i < strlen($buf); ++$i)
+	{
+		if(ord($buf[$i]) > 127) return true;
+	}
+	return false;
+}
+
 if(isset($_POST['feed']))
 {
 	$feed = $_POST['feed'];
@@ -65,7 +74,7 @@ if(isset($_POST['feed']))
 					$used_feeds[$row[0]] = 1;
 				}
 				$feed_id = -1;
-				$result = mysql_query("select id, name,link from feeds order by popularity desc limit 1000");
+				$result = mysql_query("select a.id, a.name  from feeds a, feed_articles b, articles c where a.id=b.feed_id and b.feed_id=$feed_id and b.article_id=c.id order by c.pub_at desc limit 1000");
 				$n = 0;
 				while($row=mysql_fetch_array($result))
 				{
@@ -73,6 +82,7 @@ if(isset($_POST['feed']))
 					$feed_id = $row[0];
 					if(array_key_exists($feed_id, $used_feeds)) continue;
 					$name = $row[1];
+					if(!IsChinese($name)) continue;
 					if(strlen($name) < 1) continue;
 					$link = $row[2];
 					echo "<a href=\"$link\" target=_blank>$name</a><br>";
