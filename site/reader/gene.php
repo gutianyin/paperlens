@@ -78,7 +78,7 @@ if(isset($_POST['feed']))
 					echo "<input type=\"text\" name=\"gene\" class=\"gene\" /><br>";
 					break;
 				}
-				
+				echo $feed_id;
 				$result = mysql_query("select c.title, c.link  from feed_articles b, articles c where b.feed_id=$feed_id and b.article_id=c.id order by c.pub_at desc limit 10");
 				while($row=mysql_fetch_array($result))
 				{
