@@ -74,7 +74,7 @@ if(isset($_POST['feed']))
 					$used_feeds[$row[0]] = 1;
 				}
 				$feed_id = -1;
-				$result = mysql_query("select a.id, a.name  from feeds a, feed_articles b, articles c where a.id=b.feed_id and b.article_id=c.id order by c.pub_at desc limit 1000");
+				$result = mysql_query("select a.id, a.name,a.link  from feeds a, feed_articles b, articles c where a.id=b.feed_id and b.article_id=c.id order by c.pub_at desc limit 1000");
 				$n = 0;
 				while($row=mysql_fetch_array($result))
 				{
