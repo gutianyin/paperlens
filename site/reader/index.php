@@ -204,10 +204,9 @@ if($get_rss == 1)
 					if(in_array($id, $history)) $like_str = "<a id=\"feed_$id\" class=\"like\" $onclick_str style=\"background:#AAA;\">谢谢</a>";
 
 					echo "<div class=\"item\"><span class=\"feed\"><a href=\"$link\" target=_blank>$name</a></span>"
-					     . "<span class=\"article\"><a href=\"$article_link\" target=_blank>$article</a></span>"
+					     . "<span class=\"article\"><a href=\"/site/reader/article.php?id=$article_id\" target=_blank>$article</a></span>"
 					     . "<span class=\"subscribe\">$like_str</span>"
 					     . "</div>";
-					echo "<div class=\"item\">" . GetArticle($article_id) . "</div>";
 					echo "<script type=\"text/javascript\">addLoadHistory($id)</script>";
 				}
 			}
