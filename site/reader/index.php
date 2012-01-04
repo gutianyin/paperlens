@@ -15,7 +15,7 @@ function GetArticle($article_id)
 	$itemxml = file_get_contents("http://www.reculike.com/site/reader/articles/" . (string)($article_id % 10) . "/" . (string)($article_id));
 	$p1 = strpos($itemxml, "<description>");
 	$p2 = strpos($itemxml, "</description>");
-	return substr($itemxml, $p1, $p2 - $p1);
+	return htmlspecialchars_decode(substr($itemxml, $p1, $p2 - $p1));
 }
 
 $get_rss = 0;
