@@ -37,53 +37,22 @@ $id = $_GET['id'];
 		</style>
 	<head>
 	<body>
-	<script type="text/javascript">
-  window.___gcfg = {lang: 'zh-CN'};
-
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
-</script>
-		<div id="head">
-			<p style="font-size:14px;color:#888;">选择自己喜欢的feed点击订阅，点击刷新看到更多的候选feed，选定后点击生成RSS可以生成一个RSS链接</p>
-			<p style="font-size:14px;color:#888;">分享: <a href="javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:'',r='http://www.douban.com/recommend/?url='+e(d.location.href)+'&title='+e(d.title)+'&sel='+e(s)+'&v=1',x=function(){if(!window.open(r,'douban','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r+'&r=1'};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()"><img src="http://img2.douban.com/pics/fw2douban1.png" alt="推荐到豆瓣" /></a><g:plusone size="medium" annotation="inline"></g:plusone></p>
-			<a href="http://www.reculike.com/site/reader/" class="butn">刷新</a>
-			<a onclick="deleteHistory();" href="http://www.reculike.com/site/reader/" class="butn">
-				重置
-			</a>
-			<?php
-				if($uid < 0)
-				{
-					echo "<a href=\"http://www.reculike.com/site/reader/?rss=1\" class=\"butn\">生成RSS</a>";
-				}
-				else
-				{
-					$rss_link = "http://www.reculike.com/site/reader/myfeed.php?uid=$uid";
-					$rss_encode_link = urlencode($rss_link);
-					echo "<a target=\"_blank\" href=\"$rss_link\" class=\"butn\">我的RSS</a>";
-					echo "<a class=\"butn\" style=\"background:#FFF;\" target=\"_blank\" href=\"http://fusion.google.com/add?source=atgs&feedurl=$rss_encode_link\"><img src=\"http://buttons.googlesyndication.com/fusion/add.gif\" border=\"0\" alt=\"Add to Google\"></a>";
-					echo "<a target=\"_blank\" href=\"http://xianguo.com/subscribe?url=$rss_encode_link\"><img src=\"http://xgres.com/static/images/sub/sub_XianGuo_08.gif\" border=\"0\" /></a>";
-				}
-			?>
-		</div>
 		<div id="main">
 			<?php echo GetArticle($id); ?>
 		</div>
 		<script type="text/javascript">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-1103913-21']);
-  _gaq.push(['_trackPageview']);
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-1103913-21']);
+		  _gaq.push(['_trackPageview']);
+		
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
+		</script>
 &nbsp;<br>&nbsp;<br>
 	</body>
 </html>
