@@ -10,6 +10,14 @@ function IsChinese($buf)
 	}
 	return false;
 }
+function GetArticle($article_id)
+{
+	$itemxml = file_get_contents("http://www.reculike.com/site/reader/articles/" . (string)($article_id % 10) . "/" . (string)($article_id));
+	$p1 = strpos($itemxml, "<description>");
+	$p2 = strpos($itemxml, "</description>");
+	return substr($itemxml, $p1, $p2 - $p1);
+}
+
 $get_rss = 0;
 if(isset($_GET["rss"])) $get_rss = 1;
 
@@ -173,7 +181,7 @@ if($get_rss == 1)
 			}
 			foreach($rank as $id => $w)
 			{
-				$result = mysql_query("select a.name, a.link, c.title, c.link  from feeds a, feed_articles b, articles c where a.id=$id and a.id=b.feed_id and b.article_id=c.id order by c.pub_at desc");
+				$result = mysql_query("select a.name, a.link, c.title, c.link,c.id  from feeds a, feed_articles b, articles c where a.id=$id and a.id=b.feed_id and b.article_id=c.id order by c.pub_at desc");
 				while($row=mysql_fetch_array($result))
 				{
 					$name = $row[0];
@@ -185,6 +193,7 @@ if($get_rss == 1)
 					if(in_array($article, $articles)) continue;
 					array_push($articles, $article);
 					$article_link = $row[3];
+					$article_id = $row[4];
 					$encode_article_link = urlencode($article_link);
 					$title = urlencode($name . ": " . $article . " / 分享自 http://www.reculike.com/site/reader/");
 					if(strlen($name) > 40 || strlen($article) < 10 || strlen($article_link) > 180 || strlen($article) > 80) continue;
@@ -198,6 +207,7 @@ if($get_rss == 1)
 					     . "<span class=\"article\"><a href=\"$article_link\" target=_blank>$article</a></span>"
 					     . "<span class=\"subscribe\">$like_str</span>"
 					     . "</div>";
+					echo "<div class=\"item\">" . GetArticle($article_id) . "</div>";
 					echo "<script type=\"text/javascript\">addLoadHistory($id)</script>";
 				}
 			}
