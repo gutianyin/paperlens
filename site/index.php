@@ -98,7 +98,7 @@ if($login)
 					<?php require_once('./tools/login_section.php'); ?>
 				</div>
 			</div>
-			<div style="width:100%;float:left;clear:both;margin-top:30px;">
+			<div style="width:100%;float:left;clear:both;margin-top:30px;text-align:left;">
 				<?php include_once("hotwords.php"); ?>
 			</div>
 			<?php
