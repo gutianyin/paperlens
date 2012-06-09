@@ -2,6 +2,7 @@
 	$dom = new DOMDocument();
 	$dom->load("http://127.0.0.1/api/hotwords.php");
 	$words = $dom->getElementsByTagName('word');
+	echo "<h2>Hot Keywords</h2>";
 	echo "<div>";
 	foreach($words as $word)
 	{
