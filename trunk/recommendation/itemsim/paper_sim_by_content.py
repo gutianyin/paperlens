@@ -75,7 +75,7 @@ for y in range(0, 30):
         entity_id = row[1]
         paper_id = row[0]
         if prev_entity != entity_id:
-            if len(papers) < 100:
+            if len(papers) < 200:
                 for i in papers:
                     if i not in simTable:
                         simTable[i] = dict()
