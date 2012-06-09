@@ -100,7 +100,7 @@ if($login)
 			</div>
 			<div style="width:95%;float:left;clear:both;margin-top:30px;text-align:left;">
 				<?php include_once("hotwords.php"); ?>
-				<div style="text-aligh:center; clear:both; margin-top:20px;">
+				<div style="width:100%;text-align:center; clear:both; margin-top:20px;">
 				<script type="text/javascript"><!--
 				google_ad_client = "ca-pub-8346721777356276";
 				/* reculike home */
