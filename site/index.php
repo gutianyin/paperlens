@@ -100,6 +100,18 @@ if($login)
 			</div>
 			<div style="width:95%;float:left;clear:both;margin-top:30px;text-align:left;">
 				<?php include_once("hotwords.php"); ?>
+				
+				<script type="text/javascript"><!--
+				google_ad_client = "ca-pub-8346721777356276";
+				/* reculike home */
+				google_ad_slot = "6228489593";
+				google_ad_width = 728;
+				google_ad_height = 90;
+				//-->
+				</script>
+				<script type="text/javascript"
+				src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+				</script>
 			</div>
 			<?php
 			}
