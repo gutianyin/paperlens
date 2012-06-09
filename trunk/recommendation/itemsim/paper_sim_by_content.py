@@ -5,8 +5,10 @@ from paper import Paper
 import math
 from operator import itemgetter
 
+stopwords = set(['am', 'is', 'are', 'who', 'this', 'that', 'what', 'where'])
+
 for y in range(0, 30):
-    year = 2011 - y
+    year = 2012 - y
     print year
     connection1 = MySQLdb.connect(host = "127.0.0.1", user = "paperlens", passwd = "paper1ens", db = "paperlens")
     cursor1 = connection1.cursor()
@@ -29,10 +31,20 @@ for y in range(0, 30):
         entities["b:" + booktitle] = 1
         entities["j:" + journal] = 1
         for word in words:
+            if word in stopwords:
+                continue
             if word not in entities:
                 entities[word] = 1
             else:
                 entities[word] = entities[word] + 1
+
+        for i in range(0, len(words) - 1):
+            word = words[i] + '_' + words[i + 1]
+            if word not in entities:
+                entities[word] = 1
+            else:
+                entities[word] = entities[word] + 1
+        
         for (entity,weight) in entities.items():
             entity_id = len(entity_dict)
             if entity in entity_dict:
