@@ -4,6 +4,6 @@
 	$words = $dom->getElementsByTagName('word');
 	foreach($words as $word)
 	{
-		echo $word->item(0)->nodeValue;
+		echo $word->nodeValue;
 	}
 ?>
